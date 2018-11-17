@@ -1,0 +1,64 @@
+<!-- Safe Traversal Property Issue is Resolved after adding Resolver in the 
+     Project. And by configuring it in the route.ts and its component. So just
+     remove null colaesce operator(?) from each user property -->
+
+<div class="container mt-4">
+  <div class="row">
+    <h1>{{user.knownAs}}'s Profile</h1>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="card">
+        <img src="{{user.photoUrl || '../../../assets/user.png'}}" alt="{{user.knownAs}}" class="card-img-top img-thumbnail">
+        <div class="card-body">
+          <div>
+              <strong>Location:</strong>
+              <p>{{user.city}}, {{user.country}}</p>
+          </div>
+          <div>
+            <strong>Age:</strong>
+            <p>{{user.age}}</p>
+          </div>
+          <div>
+            <strong>Last Active:</strong>
+            <p>{{user.lastActive | timeAgo}}</p>
+          </div>
+          <div>
+            <strong>Member since:</strong>
+            <p>{{user.created | date: 'mediumDate'}}</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="btn-group d-flex">
+            <button class="btn btn-primary w-100">Like</button>
+            <!-- Here 3 is the tab id. And it is 0 based. Below we've 4 tabs and
+            4th tab has 3 id -->
+            <button class="btn btn-success w-100" (click)="selectTab(3)">Message</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <div class="tab-panel">
+        <tabset class="member-tabset" #memberTabs>
+          <tab heading="About {{user.knownAs}}">
+            <h4 [hidden]="!user.introduction">Description</h4>
+            <p>{{user.introduction}}</p>
+            <h4 [hidden]="!user.lookingFor">Looking For</h4>
+            <p>{{user.lookingFor}}</p>
+          </tab>
+          <tab heading="Interests">
+            <h4 [hidden]="!user.interests">Interests</h4>
+            <p>{{user.interests}}</p>
+          </tab>
+          <tab heading="Photos">
+              <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+          </tab>
+          <tab heading="Messages">
+            <app-member-messages [recipientId]="user.id"></app-member-messages>
+          </tab>
+        </tabset>
+      </div>
+    </div>
+  </div>
+</div>
